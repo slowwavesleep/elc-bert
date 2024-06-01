@@ -22,7 +22,12 @@ class SpanMaskingStrategy:
         self.tokenizer = tokenizer
         self.n_special_tokens = n_special_tokens
         self.padding_label_id = padding_label_id
-        self.mask_index = self.tokenizer.token_to_id("[MASK]")
+        if self.tokenizer.post_processor is not None and isinstance(
+            self.tokenizer.post_processor, processors.RobertaPostProcessor
+        ):
+            self.mask_index = self.tokenizer.token_to_id("<mask>")
+        else:
+            self.mask_index = self.tokenizer.token_to_id("[MASK]")
 
     def __call__(self, tokens):
         labels = torch.full_like(tokens, fill_value=self.padding_label_id)
