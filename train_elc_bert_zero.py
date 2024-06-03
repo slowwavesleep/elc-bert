@@ -538,7 +538,7 @@ def create_train_dataloader(data, args, global_step, seed):
         data,
         shuffle=True,
         batch_size=batch_size,
-        num_workers=7 - 1,
+        num_workers=2,
         generator=torch.Generator().manual_seed(seed),
         drop_last=True,
         pin_memory=True,
