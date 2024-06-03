@@ -23,7 +23,7 @@ class SpanMaskingStrategy:
         self.n_special_tokens = n_special_tokens
         self.padding_label_id = padding_label_id
         if self.tokenizer.post_processor is not None and isinstance(
-            self.tokenizer.post_processor, processors.RobertaPostProcessor
+            self.tokenizer.post_processor, processors.RobertaProcessing
         ):
             self.mask_index = self.tokenizer.token_to_id("<mask>")
         else:
@@ -106,7 +106,7 @@ class Dataset(Dataset):
         )
         # TODO generalize
         if self.tokenizer.post_processor is not None and isinstance(
-            self.tokenizer.post_processor, processors.RobertaPostProcessor
+            self.tokenizer.post_processor, processors.RobertaProcessing
         ):
             self.mask_index = self.tokenizer.token_to_id("<mask>")
             self.cls_index = self.tokenizer.token_to_id("<s>")
