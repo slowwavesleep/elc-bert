@@ -43,7 +43,7 @@ for line in tqdm(open(args.segments_path)):
     documents[-1].append(ids)
 
 
-with open(f"../../data/processed/cached_{SEQ_LEN + 2}.txt", "w") as f:
+with open(f"../data/processed/cached_{SEQ_LEN + 2}.txt", "w") as f:
     for document in tqdm(documents):
         segment = []
         for i, sentence in enumerate(document):
