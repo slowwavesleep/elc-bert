@@ -500,11 +500,12 @@ def save(model, optimizer, grad_scaler, scheduler, global_step, epoch, args):
 
 
 def load_dataset(args, tokenizer, device):
-    seq_length = (
-        args.seq_length * 4
-        if global_step >= int(args.device_max_steps * args.long_after)
-        else args.seq_length
-    )
+    # seq_length = (
+    #     args.seq_length * 4
+    #     if global_step >= int(args.device_max_steps * args.long_after)
+    #     else args.seq_length
+    # )
+    seq_length = args.seq_length
     train_data = Dataset(
         args.input_path.format(sequence_length=seq_length),
         get_rank(),
