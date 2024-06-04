@@ -329,7 +329,7 @@ class Attention(nn.Module):
         )
         print("position indices", position_indices.size())
         print("qp attention pre gather", attention_scores_qp.size())
-        assert torch.all(position_indices >= 0) and torch.all(position_indices < attention_scores_qp.size(1)), "Index out of bounds"
+        assert torch.all(position_indices >= 0) and torch.all(position_indices < attention_scores_qp.size(-1)), "Index out of bounds"
         attention_scores_qp = attention_scores_qp.gather(
             dim=-1, index=position_indices
         )  # shape: [B, H, Tq, Tk]
