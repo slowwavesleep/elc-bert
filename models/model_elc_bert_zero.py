@@ -219,12 +219,15 @@ class Attention(nn.Module):
         ).unsqueeze(
             0
         )
+        print("first max", position_indices.max())
         position_indices = self.make_log_bucket_position(
             position_indices,
             config.position_bucket_size,
             config.max_position_embeddings,
         )
+        print("second max", position_indices.max())
         position_indices = config.position_bucket_size - 1 + position_indices
+        print("third max", position_indices.max())
         self.register_buffer("position_indices", position_indices, persistent=True)
 
         self.dropout = nn.Dropout(config.attention_probs_dropout_prob)
