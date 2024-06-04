@@ -18,6 +18,8 @@ class Bert(nn.Module):
         self.classifier = MaskClassifier(config, self.embedding.word_embedding.weight)
 
     def get_contextualized(self, input_ids, attention_mask):
+        print(input_ids)
+        print(input_ids.size())
         static_embeddings, relative_embedding = self.embedding(input_ids)
         contextualized_embeddings = self.transformer(
             static_embeddings,
