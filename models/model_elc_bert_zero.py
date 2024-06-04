@@ -339,6 +339,7 @@ class Attention(nn.Module):
             dim=-2, index=position_indices
         )  # shape: [B, H, Tq, Tk]
         print("pk attention post gather", attention_scores_pk.size())
+        print("attention scores shape", attention_scores.size())
         attention_scores.add_(attention_scores_qp)
         attention_scores.add_(attention_scores_pk)
 
