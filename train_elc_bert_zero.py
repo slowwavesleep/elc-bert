@@ -550,7 +550,7 @@ def create_train_dataloader(data, args, global_step, seed):
 
 if __name__ == "__main__":
     args = parse_arguments()
-    args.mixed_precision = False
+    args.mixed_precision = True
     args.activation_checkpointing = False
 
     if args.checkpoint_path is not None:
