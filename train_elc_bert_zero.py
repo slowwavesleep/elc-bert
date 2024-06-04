@@ -480,7 +480,7 @@ def training_epoch(
 
 def save(model, optimizer, grad_scaler, scheduler, global_step, epoch, args):
     checkpoint_path = f"{args.output_dir}/model.bin"
-    print(f"Saving model to {checkpoint_path}")
+    print(f"Saving model to {checkpoint_path}, is main process? {is_main_process()}")
     if is_main_process():
         model_to_save = model.module if hasattr(model, "module") else model
         torch.save(
