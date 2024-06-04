@@ -342,7 +342,7 @@ class Attention(nn.Module):
         print("attention scores shape", attention_scores.size())
         # attention_scores.add_(attention_scores_qp)
         print("Do we get here?")
-        attention_scores.add_(attention_scores_pk)
+        # attention_scores.add_(attention_scores_pk)
 
         attention_probs = MaskedSoftmax.apply(attention_scores, attention_mask, -1)
 
