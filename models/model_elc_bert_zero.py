@@ -327,17 +327,18 @@ class Attention(nn.Module):
         position_indices = self.position_indices[:query_len, :key_len].expand(
             batch_size, self.num_heads, -1, -1
         )
-        print(attention_scores_qp.size())
+        print("position indices", position_indices.size())
+        print("qp attention pre gather", attention_scores_qp.size())
         attention_scores_qp = attention_scores_qp.gather(
             dim=-1, index=position_indices
         )  # shape: [B, H, Tq, Tk]
-        print(attention_scores_qp.size())
+        print("qp attention post gather", attention_scores_qp.size())
         print()
-        print(attention_scores_pk.size())
+        print("pk attention pre gather", attention_scores_pk.size())
         attention_scores_pk = attention_scores_pk.gather(
             dim=-2, index=position_indices
         )  # shape: [B, H, Tq, Tk]
-        print(attention_scores_pk.size())
+        print("pk attention post gather", attention_scores_pk.size())
         attention_scores.add_(attention_scores_qp)
         attention_scores.add_(attention_scores_pk)
 
@@ -361,7 +362,7 @@ class Embedding(nn.Module):
         self.hidden_size = config.hidden_size
 
         self.word_embedding = nn.Embedding(config.vocab_size, config.hidden_size)
-        print(self.word_embedding.weight.size())
+        print("Word embedding size", self.word_embedding.weight.size())
         self.word_layer_norm = nn.LayerNorm(
             config.hidden_size, eps=config.layer_norm_eps, elementwise_affine=False
         )
@@ -370,7 +371,7 @@ class Embedding(nn.Module):
         self.relative_embedding = nn.Parameter(
             torch.empty(2 * config.position_bucket_size - 1, config.hidden_size)
         )
-        print(self.relative_embedding.size())
+        print("Relative embedding size", self.relative_embedding.size())
         self.relative_layer_norm = nn.LayerNorm(
             config.hidden_size, eps=config.layer_norm_eps
         )
