@@ -16,6 +16,7 @@ class Bert(nn.Module):
         self.embedding = Embedding(config)
         self.transformer = Encoder(config, activation_checkpointing)
         self.classifier = MaskClassifier(config, self.embedding.word_embedding.weight)
+        print("Hidden size?", self.config.hidden_size)
 
     def get_contextualized(self, input_ids, attention_mask):
         print(torch.max(input_ids))
