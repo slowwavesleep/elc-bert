@@ -27,6 +27,7 @@ class Bert(nn.Module):
         return contextualized_embeddings
 
     def forward(self, input_ids, attention_mask, masked_lm_labels=None):
+        print(input_ids)
         contextualized_embeddings = self.get_contextualized(input_ids, attention_mask)[
             -1
         ]
