@@ -483,18 +483,18 @@ def save(model, optimizer, grad_scaler, scheduler, global_step, epoch, args):
     print(f"Saving model to {checkpoint_path}, is main process? {is_main_process()}")
     if is_main_process():
         model_to_save = model.module if hasattr(model, "module") else model
-        # torch.save(
-        #     {
-        #         "model": model_to_save.state_dict(),
-        #         "optimizer": optimizer.state_dict(),
-        #         "grad_scaler": grad_scaler.state_dict(),
-        #         "scheduler": scheduler.state_dict(),
-        #         "global_step": global_step,
-        #         "epoch": epoch,
-        #         "args": args,
-        #     },
-        #     checkpoint_path,
-        # )
+        torch.save(
+            {
+                "model": model_to_save.state_dict(),
+                "optimizer": optimizer.state_dict(),
+                "grad_scaler": grad_scaler.state_dict(),
+                "scheduler": scheduler.state_dict(),
+                "global_step": global_step,
+                "epoch": epoch,
+                "args": args,
+            },
+            checkpoint_path,
+        )
     print("checkpoint saved")
     return checkpoint_path
 
@@ -590,6 +590,7 @@ if __name__ == "__main__":
             device,
             min_length,
         )
+        print(f"{global_step}, {args.device_max_steps}")
         checkpoint_path = save(
             model, optimizer, grad_scaler, scheduler, global_step, epoch, args
         )
