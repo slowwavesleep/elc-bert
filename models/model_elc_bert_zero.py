@@ -219,6 +219,7 @@ class Attention(nn.Module):
         ).unsqueeze(
             0
         )
+        print(position_indices)
         print("first max", position_indices.max())
         position_indices = self.make_log_bucket_position(
             position_indices,
