@@ -22,12 +22,12 @@ class SpanMaskingStrategy:
         self.tokenizer = tokenizer
         self.n_special_tokens = n_special_tokens
         self.padding_label_id = padding_label_id
-        if self.tokenizer.post_processor is not None and isinstance(
-            self.tokenizer.post_processor, processors.RobertaProcessing
-        ):
-            self.mask_index = self.tokenizer.token_to_id("<mask>")
-        else:
-            self.mask_index = self.tokenizer.token_to_id("[MASK]")
+        # if self.tokenizer.post_processor is not None and isinstance(
+        #     self.tokenizer.post_processor, processors.RobertaProcessing
+        # ):
+        #     self.mask_index = self.tokenizer.token_to_id("<mask>")
+        # else:
+        self.mask_index = self.tokenizer.token_to_id("[MASK]")
 
     def __call__(self, tokens):
         labels = torch.full_like(tokens, fill_value=self.padding_label_id)
@@ -105,18 +105,18 @@ class Dataset(Dataset):
             keep_p=keep_p,
         )
         # TODO generalize
-        if self.tokenizer.post_processor is not None and isinstance(
-            self.tokenizer.post_processor, processors.RobertaProcessing
-        ):
-            self.mask_index = self.tokenizer.token_to_id("<mask>")
-            self.cls_index = self.tokenizer.token_to_id("<s>")
-            self.sep_index = self.tokenizer.token_to_id("</s>")
-            self.pad_index = self.tokenizer.token_to_id("<pad>")
-        else:
-            self.mask_index = self.tokenizer.token_to_id("[MASK]")
-            self.cls_index = self.tokenizer.token_to_id("[CLS]")
-            self.sep_index = self.tokenizer.token_to_id("[SEP]")
-            self.pad_index = self.tokenizer.token_to_id("[PAD]")
+        # if self.tokenizer.post_processor is not None and isinstance(
+        #     self.tokenizer.post_processor, processors.RobertaProcessing
+        # ):
+        #     self.mask_index = self.tokenizer.token_to_id("<mask>")
+        #     self.cls_index = self.tokenizer.token_to_id("<s>")
+        #     self.sep_index = self.tokenizer.token_to_id("</s>")
+        #     self.pad_index = self.tokenizer.token_to_id("<pad>")
+        # else:
+        self.mask_index = self.tokenizer.token_to_id("[MASK]")
+        self.cls_index = self.tokenizer.token_to_id("[CLS]")
+        self.sep_index = self.tokenizer.token_to_id("[SEP]")
+        self.pad_index = self.tokenizer.token_to_id("[PAD]")
 
         self.segments = []
         for i, segment in enumerate(open(file)):
