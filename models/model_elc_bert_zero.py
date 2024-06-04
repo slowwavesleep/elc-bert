@@ -228,6 +228,7 @@ class Attention(nn.Module):
         print("second max", position_indices.max())
         position_indices = config.position_bucket_size - 2 + position_indices
         print("third max", position_indices.max())
+        print(position_indices)
         self.register_buffer("position_indices", position_indices, persistent=True)
 
         self.dropout = nn.Dropout(config.attention_probs_dropout_prob)
