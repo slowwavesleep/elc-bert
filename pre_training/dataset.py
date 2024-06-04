@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 from smart_open import open
-from tokenizers import processors
+from tqdm import tqdm
 
 # NOTE Change to better masking?
 
@@ -119,14 +119,15 @@ class Dataset(Dataset):
         self.pad_index = self.tokenizer.token_to_id("[PAD]")
 
         self.segments = []
-        for i, segment in enumerate(open(file)):
-            if i % n_gpus != offset:
-                continue
+        with open(file) as f:
+            for i, segment in tqdm(enumerate(f), desc="Reading dataset into memory"):
+                if i % n_gpus != offset:
+                    continue
 
-            segment = segment.strip().split(" ")
-            assert len(segment) <= seq_length - 2, " ".join(segment)
-            segment = [self.tokenizer.token_to_id(token) for token in segment]
-            self.segments.append(segment)
+                segment = segment.strip().split(" ")
+                assert len(segment) <= seq_length - 2, " ".join(segment)
+                segment = [self.tokenizer.token_to_id(token) for token in segment]
+                self.segments.append(segment)
 
     def __len__(self):
         return len(self.segments)
