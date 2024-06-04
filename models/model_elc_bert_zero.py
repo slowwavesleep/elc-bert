@@ -20,6 +20,7 @@ class Bert(nn.Module):
     def get_contextualized(self, input_ids, attention_mask):
         print(input_ids)
         print(input_ids.size())
+        print(self.embedding)
         static_embeddings, relative_embedding = self.embedding(input_ids)
         contextualized_embeddings = self.transformer(
             static_embeddings,
