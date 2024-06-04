@@ -4,7 +4,7 @@
     "hidden_size": 312,
     "intermediate_size": 1200,
     "max_position_embeddings": 192,
-    "position_bucket_size": 32,
+    "position_bucket_size": 64,
     "num_attention_heads": 12,
     "num_hidden_layers": 4,
     "vocab_size": 32768,
