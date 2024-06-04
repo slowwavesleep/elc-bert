@@ -18,6 +18,7 @@ class Bert(nn.Module):
         self.classifier = MaskClassifier(config, self.embedding.word_embedding.weight)
 
     def get_contextualized(self, input_ids, attention_mask):
+        print(torch.max(input_ids))
         print(input_ids)
         print(input_ids.size())
         print(self.embedding)
