@@ -575,8 +575,8 @@ if __name__ == "__main__":
     train_data, min_length = load_dataset(args, tokenizer, device)
 
     for epoch in count(initial_epoch):
-        if global_step == int(args.device_max_steps * args.long_after):
-            train_data, min_length = load_dataset(args, tokenizer, device)
+        # if global_step == int(args.device_max_steps * args.long_after):
+        #     train_data, min_length = load_dataset(args, tokenizer, device)
 
         global_step = training_epoch(
             model,
