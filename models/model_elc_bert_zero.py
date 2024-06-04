@@ -340,7 +340,7 @@ class Attention(nn.Module):
         )  # shape: [B, H, Tq, Tk]
         print("pk attention post gather", attention_scores_pk.size())
         print("attention scores shape", attention_scores.size())
-        attention_scores.add_(attention_scores_qp)
+        # attention_scores.add_(attention_scores_qp)
         print("Do we get here?")
         attention_scores.add_(attention_scores_pk)
 
