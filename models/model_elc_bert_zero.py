@@ -16,13 +16,9 @@ class Bert(nn.Module):
         self.embedding = Embedding(config)
         self.transformer = Encoder(config, activation_checkpointing)
         self.classifier = MaskClassifier(config, self.embedding.word_embedding.weight)
-        print("Hidden size?", self.embedding.hidden_size)
 
     def get_contextualized(self, input_ids, attention_mask):
-        print(torch.max(input_ids))
-        print(input_ids)
-        print(input_ids.size())
-        print(self.embedding)
+
         static_embeddings, relative_embedding = self.embedding(input_ids)
         contextualized_embeddings = self.transformer(
             static_embeddings,
@@ -32,7 +28,7 @@ class Bert(nn.Module):
         return contextualized_embeddings
 
     def forward(self, input_ids, attention_mask, masked_lm_labels=None):
-        print(input_ids)
+
         contextualized_embeddings = self.get_contextualized(input_ids, attention_mask)[
             -1
         ]
@@ -219,23 +215,12 @@ class Attention(nn.Module):
         ).unsqueeze(
             0
         )
-        print(torch.arange(
-            config.max_position_embeddings, dtype=torch.long
-        ).unsqueeze(1))
-        print(torch.arange(
-            config.max_position_embeddings, dtype=torch.long
-        ).unsqueeze(0))
-        print(position_indices)
-        print("first max", position_indices.max())
         position_indices = self.make_log_bucket_position(
             position_indices,
             config.position_bucket_size,
             config.max_position_embeddings,
         )
-        print("second max", position_indices.max())
         position_indices = config.position_bucket_size - 1 + position_indices
-        print("third max", position_indices.max())
-        print(position_indices)
         self.register_buffer("position_indices", position_indices, persistent=True)
 
         self.dropout = nn.Dropout(config.attention_probs_dropout_prob)
@@ -279,7 +264,6 @@ class Attention(nn.Module):
     def forward(self, hidden_states, attention_mask, relative_embedding):
         key_len, batch_size, _ = hidden_states.size()
         query_len = key_len
-        print("hidden_states", hidden_states.size())
         if self.position_indices.size(0) < query_len:
             position_indices = torch.arange(query_len, dtype=torch.long).unsqueeze(
                 1
@@ -339,23 +323,17 @@ class Attention(nn.Module):
         position_indices = self.position_indices[:query_len, :key_len].expand(
             batch_size, self.num_heads, -1, -1
         )
-        print("position indices", position_indices.size())
-        print("qp attention pre gather", attention_scores_qp.size())
-        print(position_indices.max())
-        assert torch.all(position_indices >= 0) and torch.all(position_indices < attention_scores_qp.size(-1)), "Index out of bounds"
+        assert torch.all(position_indices >= 0) and torch.all(
+            position_indices < attention_scores_qp.size(-1)
+        ), "Index out of bounds"
         attention_scores_qp = attention_scores_qp.gather(
             dim=-1, index=position_indices
         )  # shape: [B, H, Tq, Tk]
-        print("qp attention post gather", attention_scores_qp.size())
-        print()
-        print("pk attention pre gather", attention_scores_pk.size())
         attention_scores_pk = attention_scores_pk.gather(
             dim=-2, index=position_indices
         )  # shape: [B, H, Tq, Tk]
-        print("pk attention post gather", attention_scores_pk.size())
-        print("attention scores shape", attention_scores.size())
+
         attention_scores.add_(attention_scores_qp)
-        print("Do we get here?")
         attention_scores.add_(attention_scores_pk)
 
         attention_probs = MaskedSoftmax.apply(attention_scores, attention_mask, -1)
@@ -378,7 +356,6 @@ class Embedding(nn.Module):
         self.hidden_size = config.hidden_size
 
         self.word_embedding = nn.Embedding(config.vocab_size, config.hidden_size)
-        print("Word embedding size", self.word_embedding.weight.size())
         self.word_layer_norm = nn.LayerNorm(
             config.hidden_size, eps=config.layer_norm_eps, elementwise_affine=False
         )
@@ -387,7 +364,6 @@ class Embedding(nn.Module):
         self.relative_embedding = nn.Parameter(
             torch.empty(2 * config.position_bucket_size - 1, config.hidden_size)
         )
-        print("Relative embedding size", self.relative_embedding.size())
         self.relative_layer_norm = nn.LayerNorm(
             config.hidden_size, eps=config.layer_norm_eps
         )
