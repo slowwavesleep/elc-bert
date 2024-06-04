@@ -329,6 +329,7 @@ class Attention(nn.Module):
         )
         print("position indices", position_indices.size())
         print("qp attention pre gather", attention_scores_qp.size())
+        print(position_indices.max())
         assert torch.all(position_indices >= 0) and torch.all(position_indices < attention_scores_qp.size(-1)), "Index out of bounds"
         attention_scores_qp = attention_scores_qp.gather(
             dim=-1, index=position_indices
