@@ -153,7 +153,8 @@ class Dataset(Dataset):
             + [self.sep_index]
             + [self.pad_index] * padding_length
         )
-        print(segment)
+        print("*" * 10)
+        print(f"Current segment: {segment}")
         segment = torch.LongTensor(segment)
 
         attention_mask = torch.cat(
