@@ -226,7 +226,7 @@ class Attention(nn.Module):
             config.max_position_embeddings,
         )
         print("second max", position_indices.max())
-        position_indices = config.position_bucket_size - 2 + position_indices
+        position_indices = config.position_bucket_size - 1 + position_indices
         print("third max", position_indices.max())
         print(position_indices)
         self.register_buffer("position_indices", position_indices, persistent=True)
