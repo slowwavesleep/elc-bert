@@ -267,7 +267,7 @@ class Attention(nn.Module):
     def forward(self, hidden_states, attention_mask, relative_embedding):
         key_len, batch_size, _ = hidden_states.size()
         query_len = key_len
-
+        print("hidden_states", hidden_states.size())
         if self.position_indices.size(0) < query_len:
             position_indices = torch.arange(query_len, dtype=torch.long).unsqueeze(
                 1
